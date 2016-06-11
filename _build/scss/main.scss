@@ -1,0 +1,58 @@
+@mixin accessibly-hidden() {
+    position: absolute;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    top:0;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
+}
+
+%accessibly-hidden {
+    @include accessibly-hidden;
+}
+
+.a11y-hidden {
+  @extend %accessibly-hidden;
+}
+
+$hours: '12am' '1am' '2am' '3am' '4am' '5am' '6am' '7am' '8am' '9am' '10am' '11am' '12pm' '1pm' '2pm' '3pm' '4pm' '5pm' '6pm' '7pm' '8pm' '9pm' '10pm' '11pm';
+
+
+table.availability-grid {
+  margin-left:3rem;
+  thead {
+    th {
+      min-width:2.5rem;
+      &:after {
+        @extend %accessibly-hidden ;
+        content:'day';
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        position:relative;
+        &:after {
+            position:absolute;
+            right:100%;
+            padding-right:.5em;
+            bottom:0;
+            text-align:right;
+        }
+      }
+      @for $i from 1 through length($hours) {
+          &:nth-of-type(#{$i}) {
+              td {
+                &:first-of-type {
+                  &:after {
+                    content: nth($hours, $i);
+                  }
+                }
+              }
+          }
+      }
+
+    }
+  }
+}
