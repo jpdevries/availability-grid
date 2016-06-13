@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+  var webpackConfig = require('./webpack.config.js');
   grunt.initConfig({
     dirs:{
       theme:'../',
@@ -7,6 +8,24 @@ module.exports = function(grunt) {
       js:'./js/',
       css:'./css/',
       scss:'./scss/'
+    },
+    bower: {
+        install: {
+            options: {
+                targetDir: './lib',
+                layout: 'byComponent'
+            }
+        }
+    },
+    copy: {
+      misc: {
+        files: [{
+            src: 'bourbon/**/*',
+            cwd: '<%= dirs.lib %>',
+            dest: '<%= dirs.scss %>',
+            expand: true
+        }]
+      }
     },
     sass:{
       dev: {
@@ -20,6 +39,50 @@ module.exports = function(grunt) {
 				}
 			}
     },
+    postcss: {
+      options: {
+        map: true, // inline sourcemaps
+
+        // or
+        map: {
+            inline: false, // save all sourcemaps as separate files...
+            annotation: '<%= dirs.theme %><%= dirs.assets %><%= dirs.css %>maps/' // ...to the specified directory
+        },
+
+        processors: [
+          require('pixrem')(), // add fallbacks for rem units
+          require('autoprefixer')({browsers: 'last 2 versions'}), // add vendor prefixes
+          //require('cssnano')() // minify the result
+        ]
+      },
+      dist: {
+        src: '<%= dirs.theme %><%= dirs.assets %><%= dirs.css %>*.css'
+      }
+    },
+    cssmin:{
+      ship: {
+        options:{
+          report:'gzip'
+        },
+        files: {
+            '<%= dirs.theme %><%= dirs.assets %><%= dirs.css %>main.min.css': '<%= dirs.theme %><%= dirs.assets %><%= dirs.css %>main.css'
+        }
+      },
+    },
+    webpack:{
+      options:webpackConfig,
+      dist:{
+
+      }
+    },
+    uglify: {
+      js: {
+        options:{report:"gzip"},
+        files: {
+          '<%= dirs.theme %><%= dirs.assets %><%= dirs.js %>app.min.js': '<%= dirs.theme %><%= dirs.assets %><%= dirs.js %>app.js'
+        }
+      }
+    },
     watch: { /* trigger tasks on save */
       options: {
           livereload: true
@@ -29,13 +92,19 @@ module.exports = function(grunt) {
               livereload: false
           },
           files: '<%= dirs.scss %>**/*.scss',
-          tasks: ['sass']
+          tasks: ['sass','postcss']
       }
     }
   });
 
+  grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-postcss');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-webpack');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  grunt.registerTask('build',['sass']);
+  grunt.registerTask('build',['sass','postcss','cssmin','webpack','uglify']);
 };
