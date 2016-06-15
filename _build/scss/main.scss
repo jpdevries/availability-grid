@@ -31,10 +31,10 @@ table.availability-grid {
   thead {
     th {
       min-width:2.5rem;
-      &:after {
+      /*&:after {
         @extend %accessibly-hidden ;
         content:'day';
-      }
+      }*/
     }
   }
   tbody {
@@ -57,11 +57,11 @@ table.availability-grid {
                 &:first-of-type {
                   &:after {
                     content: nth($hours, $i);
-                  }
-                }
-              }
-          }
-      }
+                  } // after
+                } // first-of-type
+              } // td
+          } // nth-of-type
+      } // for
 
       div {
         display:block;
@@ -70,9 +70,6 @@ table.availability-grid {
       }
 
       input[type="checkbox"] {
-        //position:absolute;
-        //display:none;
-        //@extend %accessibly-hidden;
         appearance:none;
         background:transparent;
         position:absolute;
@@ -124,6 +121,7 @@ table.availability-grid {
 
     }
   }
+
   &[data-military-time] {
     tbody tr {
       @for $i from 1 through length($militaryHours) {
@@ -132,11 +130,12 @@ table.availability-grid {
                 &:first-of-type {
                   &:after {
                     content: nth($militaryHours, $i);
-                  }
-                }
-              }
-          }
-      }
-    }
+                  } // after
+                } // first-of-type
+              } // td
+          } // nth-of-type
+      } // for
+    } // tbody tr
   }
+
 }

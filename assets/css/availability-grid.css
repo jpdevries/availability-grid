@@ -1,4 +1,4 @@
-.a11y-hidden, table.availability-grid thead th:after {
+.a11y-hidden {
   position: absolute;
   height: 1px;
   width: 1px;
@@ -17,9 +17,11 @@ table.availability-grid {
   padding-left: 3rem; }
   table.availability-grid thead th {
     min-width: 40px;
-    min-width: 2.5rem; }
-    table.availability-grid thead th:after {
-      content: 'day'; }
+    min-width: 2.5rem;
+    /*&:after {
+        @extend %accessibly-hidden ;
+        content:'day';
+      }*/ }
   table.availability-grid tbody tr td {
     position: relative; }
     table.availability-grid tbody tr td:first-of-type:after {
@@ -159,4 +161,4 @@ table.availability-grid {
   table.availability-grid[data-military-time] tbody tr:nth-of-type(24) td:first-of-type:after {
     content: "23:00"; }
 
-/*# sourceMappingURL=maps/main.css.map */
+/*# sourceMappingURL=maps/availability-grid.css.map */

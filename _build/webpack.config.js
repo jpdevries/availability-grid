@@ -2,8 +2,8 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  entry: './js/main.js',
-  output: { path: '../assets/js/', filename: 'app.js' },
+  entry: './js/availability-grid.js',
+  output: { path: '../assets/js/', filename: 'avail-grid.js' },
   externals: {},
   module: {
     loaders: [
