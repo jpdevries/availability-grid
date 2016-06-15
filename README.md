@@ -9,7 +9,7 @@ AvailabilityGrid is progressively enhanced from a semantic HTML `<form>` made up
 ### Demo
 [Try the demo](http://jpdevries.github.io/availability-grid/).
 
-![](http://j4p.us/3I2D1W1S0a2T/hero.gif)
+![](http://j4p.us/093I2y0R322A/hero.gif)
 
 _Note: The interfaces for Military Time, Week Starts On, and Inverse Selection options are provided by and part of the demo but are not directly part of the VanillaJS Driver. The VanillaJS Driver is meant to be very light and does little other than assign keyboard and input listeners and handle selection and toggle of inputs._
 
@@ -30,6 +30,12 @@ grid.destroy(); // remove listeners
 // mutate the DOM or whatever...
 grid.init(); // re-add listeners
 ```
+
+## Weigh&ndash;In
+| Type           | Un&ndash;minified (kB) | Minified (kB) | GZIP (kB)
+| ------------- | ------------- | --- | --- |
+| CSS  | 7.14  | 6.01  | 0.846  |
+| JavaScript  | 12.32  | 5.77  | 1.96  |
 
 ## Screencasts
 
