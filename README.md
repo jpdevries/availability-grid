@@ -9,7 +9,7 @@ AvailabilityGrid is progressively enhanced from a semantic HTML `<form>` made up
 ### Demo
 [Try the demo](http://jpdevries.github.io/availability-grid/).
 
-![](http://j4p.us/1s191T244112/Screen%20Shot%202016-06-15%20at%201.19.43%20PM.png)
+![](http://j4p.us/3I2D1W1S0a2T/hero.gif)
 
 _Note: The interfaces for Military Time, Week Starts On, and Inverse Selection options are provided by and part of the demo but are not directly part of the VanillaJS Driver. The VanillaJS Driver is meant to be very light and does little other than assign keyboard and input listeners and handle selection and toggle of inputs._
 
@@ -73,7 +73,12 @@ grid.init(); // re-add listeners
 
 ### Checkbox
 ```html
-<input type="checkbox" name="avail-sun-12am" id="avail-sun-12am" aria-describedby="avail-sun-12am-label howto">  
+<input
+  type="checkbox"
+  name="avail-sun-12am"
+  id="avail-sun-12am"
+  aria-describedby="avail-sun-12am-label howto"
+>  
 
 ```
 
@@ -142,19 +147,29 @@ In addition to the inherent keyboard accessibility that comes with the ability t
 ### Arrow Keys
 While focused on a cell, the up, right, down, and left arrow keys can be used to shift focus to a neighboring&nbsp;cell.
 
+![](http://j4p.us/3N3M38273H1F/arrow-key.gif)
+
 ## Usability Considerations
 The main usability consideration currently made&nbsp;is:
 
 - range selection
+- inverse selection
 - VoiceOver usage
 
 ### Range Selection
 The Shift key can be used to select ranges of inputs. When focused on a cell, hold Shift while clicking another to toggle a range of time&nbsp;slots.
 
-![](http://j4p.us/0Y3P2o1k3A1Q/Screen%20Shot%202016-06-15%20at%201.18.07%20PM.png)
+![](http://j4p.us/3h0f071i2F04/shift-selection.gif)
+
+### Inverse Selection
+`AvailabilityGrid` exposes a `.inverse()` method that inverts the checked property of each option. This user consideration can be used as a shortcut to make particular selections.
+
+![](http://j4p.us/0i3l3S3F3I1B/inverse-selection.gif)
 
 ### VoiceOver Usage
 Accessibly hidden text is used to make screen readers read aloud a question like "Are you available Mondays at 9am?" or a statement like "You are available Mondays at 9am."&nbsp;accordingly.
+
+![](http://j4p.us/0N2J0K0S1202/Screen%20Shot%202016-06-15%20at%204.14.30%20PM.png)
 
 See the [VoiceOver Screencast](https://vimeo.com/170844798).
 
