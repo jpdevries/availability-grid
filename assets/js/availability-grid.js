@@ -100,6 +100,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.removeListeners();
 
 	  try {
+	    // if fired back up with .init() without a new element passed in, AvailabilityGrid will try and find the previous element by id
 	    this.entity = this.entity.getAttribute('id');
 	  } catch (e) {
 	    this.entity = undefined;

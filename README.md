@@ -37,7 +37,7 @@ _Note:If you aren't using a module loading system you can still using `Availabil
 ```
 
 ### Methods
-When a new `AvailabilityGrid` is created the instance automatically initializes itself. `AvailabilityGrid` instances can be destroyed via `.destroy()` and re-awoken from the dead with&nbsp;`.init()`.
+When a new `AvailabilityGrid` is created the instance automatically initializes itself. `AvailabilityGrid` instances can be destroyed via `.destroy()` and re-awoken from the dead with&nbsp;`.init()`. The catch is the `element` must of had an `id`.
 
 ```js
 grid.destroy(); // remove listeners
@@ -45,7 +45,7 @@ grid.destroy(); // remove listeners
 grid.init(); // re-add listeners
 ```
 
-When calling `.init()` you may pass in a fresh set of options.
+If needed, when calling `.init()` you may pass in a fresh set of options.
 
 ```js
 grid.init({

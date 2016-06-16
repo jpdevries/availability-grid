@@ -17,11 +17,7 @@ table.availability-grid {
   padding-left: 3rem; }
   table.availability-grid thead th {
     min-width: 40px;
-    min-width: 2.5rem;
-    /*&:after {
-        @extend %accessibly-hidden ;
-        content:'day';
-      }*/ }
+    min-width: 2.5rem; }
   table.availability-grid tbody tr td {
     position: relative; }
     table.availability-grid tbody tr td:first-of-type:after {
@@ -102,14 +98,14 @@ table.availability-grid {
     outline: none; }
   table.availability-grid tbody tr div:focus, table.availability-grid tbody tr div:active {
     background: #d8dede; }
-  table.availability-grid tbody tr input[type="checkbox"]:focus ~ div {
+  table.availability-grid tbody tr input[type="checkbox"]:focus + div {
     background: #e3e7e7;
     box-shadow: 0 0 5px #51cbee;
     border: 1px solid #51cbee; }
-  table.availability-grid tbody tr input[type="checkbox"]:checked ~ div {
+  table.availability-grid tbody tr input[type="checkbox"]:checked + div {
     background: #64D481;
     border-color: #404853; }
-  table.availability-grid tbody tr input[type="checkbox"]:checked:focus ~ div {
+  table.availability-grid tbody tr input[type="checkbox"]:checked:focus + div {
     background: #88de9e;
     border-color: #51cbee; }
   table.availability-grid[data-military-time] tbody tr:nth-of-type(1) td:first-of-type:after {

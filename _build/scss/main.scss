@@ -31,10 +31,6 @@ table.availability-grid {
   thead {
     th {
       min-width:2.5rem;
-      /*&:after {
-        @extend %accessibly-hidden ;
-        content:'day';
-      }*/
     }
   }
   tbody {
@@ -92,29 +88,21 @@ table.availability-grid {
       div {
         &:focus, &:active {
             background:darken(#F9FAFA,12%);
-           > label {
-              //background:darken(#F9FAFA,12%);
-           }
         }
       }
 
-      input[type="checkbox"]:focus ~ div {
+      input[type="checkbox"]:focus + div {
         background:darken(#F9FAFA,8%);
         box-shadow: 0 0 5px rgba(81, 203, 238, 1);
         border: 1px solid rgba(81, 203, 238, 1);
       }
 
-      input[type="checkbox"]:checked ~ div {
+      input[type="checkbox"]:checked + div {
         background: #64D481;
         border-color: #404853;
       }
 
-      input[type="checkbox"]:focus ~ div {
-        //background: #64D481;
-        //border-color: transparent;
-      }
-
-      input[type="checkbox"]:checked:focus ~ div {
+      input[type="checkbox"]:checked:focus + div {
         background: lighten(#64D481,9%);
         border-color:rgba(81, 203, 238, 1);
       }
