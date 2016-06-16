@@ -65,11 +65,11 @@ grid.inverse(); // inverse the selection
 ```
 
 ### Options
-| key | default | description
-| ---- | ---- |
-| `element` | `'availability-grid'` | The HTML Element or `id` of the HTML element
-| `inputSelector` | `'input[type="checkbox"]'` | Selector used when querying DOM for checkbox inputs
-| `whenTextSelector` | `'span.a11y-hidden'` | Selector used when querying DOM to change hidden text for screen readers
+| key | default | description |
+| ---- | ---- | ---- |
+| `element` | `'availability-grid'` | The HTML Element or `id` of the HTML element |
+| `inputSelector` | `'input[type="checkbox"]'` | Selector used when querying DOM for checkbox inputs |
+| `whenTextSelector` | `'span.a11y-hidden'` | Selector used when querying DOM to change hidden text for screen readers |
 
 ## Weigh&ndash;In
 | Type           | Un&ndash;minified (kB) | Minified (kB) | GZIP (kB)
