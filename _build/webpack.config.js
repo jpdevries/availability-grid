@@ -2,8 +2,14 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  entry: './js/availability-grid.js',
-  output: { path: '../assets/js/', filename: 'avail-grid.js' },
+  entry: {
+    'availability-grid':['./js/availability-grid.js']
+  },
+  output: {
+    path: '../assets/js/',
+    filename: '[name].js',
+    libraryTarget: 'umd'
+  },
   externals: {},
   module: {
     loaders: [

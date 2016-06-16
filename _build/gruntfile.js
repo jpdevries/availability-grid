@@ -75,11 +75,18 @@ module.exports = function(grunt) {
 
       }
     },
+    umd: {
+      all:{
+        options:{
+          src: '<%= dirs.theme %><%= dirs.assets %><%= dirs.js %>availability-grid.js'
+        }
+      }
+    },
     uglify: {
       js: {
         options:{report:"gzip"},
         files: {
-          '<%= dirs.theme %><%= dirs.assets %><%= dirs.js %>avail-grid.min.js': '<%= dirs.theme %><%= dirs.assets %><%= dirs.js %>avail-grid.js'
+          '<%= dirs.theme %><%= dirs.assets %><%= dirs.js %>availability-grid.min.js': '<%= dirs.theme %><%= dirs.assets %><%= dirs.js %>availability-grid.js'
         }
       }
     },
@@ -105,6 +112,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-webpack');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-umd');
 
   grunt.registerTask('build',['sass','postcss','cssmin','webpack','uglify']);
 };

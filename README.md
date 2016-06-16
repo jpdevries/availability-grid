@@ -1,8 +1,3 @@
-AvailabilityGrid
-========
-
-An HTML Component for accepting weekly availability.
-
 ## HTML&ndash;first
 AvailabilityGrid is progressively enhanced from a semantic HTML `<form>` made up of a `<table>` of&nbsp;`<input type="checkbox>"`.
 
@@ -14,15 +9,32 @@ AvailabilityGrid is progressively enhanced from a semantic HTML `<form>` made up
 _Note: The interfaces for Military Time, Week Starts On, and Inverse Selection options are provided by and part of the demo but are not directly part of the VanillaJS Driver. The VanillaJS Driver is meant to be very light and does little other than assign keyboard and input listeners and handle selection and toggle of inputs._
 
 ## Usage
-`AvailabilityGrid` is packaged by Webpack as a JavaScript module and can be included using&nbsp;`require()`.
+`AvailabilityGrid` is packaged by Webpack as a UMD JavaScript module and can be universally used as such.
 
+### Universal Module Definition
+#### `require()`
 ```js
-var availGrid = require('./node_modules/availability-grid/availability-grid');
-grid = new availGrid.AvailabilityGrid();
+var AvailabilityGrid = require('availability-grid').AvailabilityGrid;
+
+document.addEventListener('DOMContentLoaded', function() {
+    var grid = new AvailabilityGrid();
+});
+
 ```
 
-_Note:If you aren't using a module loading system you can still using `AvailabilityGrid` by first [including&nbsp;require1k](http://stuk.github.io/require1k/)._
+_Note:If you aren't using a module loading system you can still using `AvailabilityGrid` via a `AvailabilityGrid` global variable exposed by the UMD loader._
 
+#### `global`
+```html
+<script defer src="./assets/js/availability-grid.js"></script>
+<script defer>
+  document.addEventListener('DOMContentLoaded',function(){
+    var grid = new AvailabilityGrid();
+  });
+</script>
+```
+
+### Methods
 When a new `AvailabilityGrid` is created the instance automatically initializes itself. `AvailabilityGrid` instances can be destroyed via `.destroy()` and re-awoken from the dead with&nbsp;`.init()`.
 
 ```js
@@ -30,6 +42,32 @@ grid.destroy(); // remove listeners
 // mutate the DOM or whatever...
 grid.init(); // re-add listeners
 ```
+
+When calling `.init()` you may pass in a fresh set of options.
+
+```js
+grid.init({
+  element:document.getElementById('new-grid')
+});
+```
+
+Calling `.destroy()` will remove all listeners and references to `element` but options like `inputSelector` will persist and do not need to be reset when reawakening an instance by later calling&nbsp;`.init()`.
+
+_Note: As AvailabilityGrid instances `.destroy()` themselves they look for an `id` on `element`. If found, `element` will be set to the string `id` so as to remove references to that element while still being able to query the DOM for it if `.init()` is later called without passing in an&nbsp;element._
+
+The current selection can be inverted using the `.inverse()`&nbsp;method.
+
+```js
+var grid = new AvailabilityGrid();
+grid.inverse(); // inverse the selection
+```
+
+### Options
+| key | default | description
+| ---- | ---- |
+| `element` | `'availability-grid'` | The HTML Element or `id` of the HTML element
+| `inputSelector` | `'input[type="checkbox"]'` | Selector used when querying DOM for checkbox inputs
+| `whenTextSelector` | `'span.a11y-hidden'` | Selector used when querying DOM to change hidden text for screen readers
 
 ## Weigh&ndash;In
 | Type           | Un&ndash;minified (kB) | Minified (kB) | GZIP (kB)
@@ -44,7 +82,7 @@ grid.init(); // re-add listeners
 
 ## HTML Architecture
 ```html
-<table class="availability-grid">
+<table id="availability-grid" class="availability-grid">
   <thead>
     <tr>
       <th data-dow="sun" data-index="0">Sun<span class="a11y-hidden">day</span></th>
@@ -95,7 +133,7 @@ Each input has the following&nbsp;attributes:
  - id
  -aria-describedby
 
-All inputs are `type="checkbox"`. `name` and `id` are used for `<form>` and `<label>` associations. `name` and `id` values should be unique to the `<input>` but may be the same value ex:`name="avail-sun-12am" id="avail-sun-12am"`.
+All inputs are `type="checkbox"`. `name` and `id` are used for `<form>` and `<label>` associations. `name` and `id` values should be unique to the `<input>` but may be the same value ex:`name="avail-sun-12am" id="avail-sun-12am"`. Use `aria-describedby` to allow the input to be described by multiple elements. This is helpful to use in conjunction with the accessibly hidden text&nbsp;technique.
 
 ### `<label>`
 ```html

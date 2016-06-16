@@ -5,7 +5,7 @@ var index = require('./globals/index');
 
 var AvailabilityGrid = function(_opts) {
   this.opts = Object.assign({},{
-    selector:'.availability-grid',
+    element:'availability-grid',
     inputSelector:'input[type="checkbox"]',
     whenTextSelector:'span.a11y-hidden'
   },_opts);
@@ -16,11 +16,13 @@ var AvailabilityGrid = function(_opts) {
   this.init();
 };
 
-AvailabilityGrid.prototype.init = function() {
+AvailabilityGrid.prototype.init = function(_opts) {
+  this.opts = Object.assign({},this.opts,_opts);
+
   var that = this;
 
   this.keyCoords = {x:0,y:0};
-  this.entity = document.querySelector(this.opts.selector);
+  this.entity = typeof(this.opts.element) == "string" ? document.getElementById(this.opts.element) : this.opts.element;
 
   this.addListeners();
 
@@ -31,6 +33,12 @@ AvailabilityGrid.prototype.init = function() {
 
 AvailabilityGrid.prototype.destroy = function() {
   this.removeListeners();
+
+  try { // if fired back up with .init() without a new element passed in, AvailabilityGrid will try and find the previous element by id
+    this.entity = this.entity.getAttribute('id');
+  } catch (e) {
+    this.entity = undefined;
+  }
 };
 
 AvailabilityGrid.prototype.inverse = function() {
@@ -52,17 +60,13 @@ AvailabilityGrid.prototype.removeListeners = function() {
 };
 
 AvailabilityGrid.prototype.addKeyboardListeners = function() {
-  var availGrid = document.querySelector(this.opts.selector);
-
-  availGrid.addEventListener("keydown", this.handleKeyPress.bind(this), false);
-  availGrid.addEventListener("keyup", this.handleKeyUp.bind(this), false);
+  this.entity.addEventListener("keydown", this.handleKeyPress.bind(this), false);
+  this.entity.addEventListener("keyup", this.handleKeyUp.bind(this), false);
 };
 
 AvailabilityGrid.prototype.removeKeyboardListeners = function() {
-  var availGrid = document.querySelector(this.opts.selector);
-
-  availGrid.removeEventListener("keydown", this.handleKeyPress.bind(this), false);
-  availGrid.removeEventListener("keyup", this.handleKeyUp.bind(this), false);
+  this.entity.removeEventListener("keydown", this.handleKeyPress.bind(this), false);
+  this.entity.removeEventListener("keyup", this.handleKeyUp.bind(this), false);
 };
 
 AvailabilityGrid.prototype.addInputListeners = function() {
@@ -158,7 +162,7 @@ AvailabilityGrid.prototype.handleInputFocus = function(event){
 
 AvailabilityGrid.prototype.handleKeyPress = function(event) {
   var that = this;
-  var availGrid = document.querySelector(this.opts.selector);
+  var availGrid = this.entity;
   var rows = availGrid.querySelectorAll('tbody tr');
   var numCols = rows[0].querySelectorAll('td').length;
 
@@ -205,4 +209,6 @@ AvailabilityGrid.prototype.handleKeyUp = function(event) {
   if(event.which == 16) this.shiftKeyDown = false;
 };
 
-exports.AvailabilityGrid = AvailabilityGrid;
+module.exports = {
+  AvailabilityGrid:AvailabilityGrid
+};

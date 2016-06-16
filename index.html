@@ -67,7 +67,7 @@
       </form>
       <form action="#" id="availability-grid-form">
         <p id="howto" class="a11y-hidden">Tab to the next time slot or use arrow keys navigate the days and&nbsp;times. Hold shift and click another input to toggle ranges.</p>
-        <table class="availability-grid">
+        <table id="availability-grid" class="availability-grid">
            <thead>
               <tr><th data-dow="sun" data-index="0">Sun<span class="a11y-hidden">day</span></th><th data-dow="mon" data-index="1">Mon<span class="a11y-hidden">day</span></th><th data-dow="tue" data-index="2">Tues<span class="a11y-hidden">day</span></th><th data-dow="wed" data-index="3">Wed<span class="a11y-hidden">nesday</span></th><th data-dow="thur" data-index="4">Thur<span class="a11y-hidden">sday</span></th><th data-dow="fri" data-index="5">Fri<span class="a11y-hidden">day</span></th><th data-dow="sat" data-index="6">Sat<span class="a11y-hidden">urday</span></th></tr>
            </thead>
@@ -776,18 +776,21 @@
         </footer>
       </form>
       <!--script defer src="https://code.jquery.com/jquery-2.2.4.js"   integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="   crossorigin="anonymous"></script-->
+      <script defer src="./assets/js/availability-grid.js"></script>
+      <script defer>
+        var grid;
+        document.addEventListener('DOMContentLoaded',function(){
+          grid = new AvailabilityGrid();
+        });
+      </script>
       <!-- http://stuk.github.io/require1k/ -->
       <script defer>R=function(e,n,v1){function t(e,o,u,a){if(e.g)return o(e.e,e);var c=e.g=e.l,f=new XMLHttpRequest;f.onload=function(i,l){function s(){l--||o(n,e)}200==f.status||e.t?(i=[],(e.t=e.t||f.response).replace(/(?:^|[^\w\$_.])require\s*\(\s*["']([^"']*)["']\s*\)/g,function(e,n){i.push(n)}),l=i.length,i.map(function(o){t(r(e.l,o),s,"."!=o[0]?c+"/../":n,o)}),s()):u?t(e.n=r(u+="../",a),o,u,a):(e.e=f,o(f,e))},e.t?f.onload():(f.open("GET",c,!0),f.send())}function r(e,n,t){if(e.e)throw e.e;return n?(f.href=e,i.href="."!=n[0]?"./node_modules/"+n:n,t=i.href+".js",f.href="",u[t]=u[t]||{l:t}):e.n?r(e.n):(e[c]||(e.f||a("(function(require,"+c+",module){"+e.t+"\n})//# sourceURL="+e.l))(function(n){return r(r(e.l,n))},e[c]={},e),e[c])}function o(e,n){t(e.call?{l:"",t:""+e,f:e}:r("",e),function(t,o){try{e=r(o)}catch(u){t=u}n&&n(t,e)})}var u={},a=eval,c="createElement",f=e[c]("base"),i=e[c]("a");return e.head.appendChild(f),c=e.querySelector("script[data-main]"),c&&o(c.dataset.main),c="exports",o}(document);</script>
       <script defer>
-      var grid;
       document.addEventListener('DOMContentLoaded', function() {
         R(function(require, module, exports){
-          var availGrid = require('./_build/js/availability-grid');
           var serializeArray = require('./_build/js/globals/serializearray');
           var form = document.getElementById('availability-grid-form');
-
           // create the grid, assigns keyboard and input listeners, batch invert method
-          grid = new availGrid.AvailabilityGrid();
 
           document.querySelector('html').classList.add('grid-added');
 

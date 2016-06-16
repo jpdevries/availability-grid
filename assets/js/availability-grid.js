@@ -1,4 +1,14 @@
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 
@@ -44,16 +54,23 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__(1);
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
-	var getClosest = __webpack_require__(1).getClosest;
-	var getSiblings = __webpack_require__(2).getSiblings;
-	var serializeArray = __webpack_require__(3);
-	var index = __webpack_require__(4);
+	var getClosest = __webpack_require__(2).getClosest;
+	var getSiblings = __webpack_require__(3).getSiblings;
+	var serializeArray = __webpack_require__(4);
+	var index = __webpack_require__(5);
 
 	var AvailabilityGrid = function AvailabilityGrid(_opts) {
 	  this.opts = Object.assign({}, {
-	    selector: '.availability-grid',
+	    element: 'availability-grid',
 	    inputSelector: 'input[type="checkbox"]',
 	    whenTextSelector: 'span.a11y-hidden'
 	  }, _opts);
@@ -64,11 +81,13 @@
 	  this.init();
 	};
 
-	AvailabilityGrid.prototype.init = function () {
+	AvailabilityGrid.prototype.init = function (_opts) {
+	  this.opts = Object.assign({}, this.opts, _opts);
+
 	  var that = this;
 
 	  this.keyCoords = { x: 0, y: 0 };
-	  this.entity = document.querySelector(this.opts.selector);
+	  this.entity = typeof this.opts.element == "string" ? document.getElementById(this.opts.element) : this.opts.element;
 
 	  this.addListeners();
 
@@ -79,6 +98,12 @@
 
 	AvailabilityGrid.prototype.destroy = function () {
 	  this.removeListeners();
+
+	  try {
+	    this.entity = this.entity.getAttribute('id');
+	  } catch (e) {
+	    this.entity = undefined;
+	  }
 	};
 
 	AvailabilityGrid.prototype.inverse = function () {
@@ -100,17 +125,13 @@
 	};
 
 	AvailabilityGrid.prototype.addKeyboardListeners = function () {
-	  var availGrid = document.querySelector(this.opts.selector);
-
-	  availGrid.addEventListener("keydown", this.handleKeyPress.bind(this), false);
-	  availGrid.addEventListener("keyup", this.handleKeyUp.bind(this), false);
+	  this.entity.addEventListener("keydown", this.handleKeyPress.bind(this), false);
+	  this.entity.addEventListener("keyup", this.handleKeyUp.bind(this), false);
 	};
 
 	AvailabilityGrid.prototype.removeKeyboardListeners = function () {
-	  var availGrid = document.querySelector(this.opts.selector);
-
-	  availGrid.removeEventListener("keydown", this.handleKeyPress.bind(this), false);
-	  availGrid.removeEventListener("keyup", this.handleKeyUp.bind(this), false);
+	  this.entity.removeEventListener("keydown", this.handleKeyPress.bind(this), false);
+	  this.entity.removeEventListener("keyup", this.handleKeyUp.bind(this), false);
 	};
 
 	AvailabilityGrid.prototype.addInputListeners = function () {
@@ -206,7 +227,7 @@
 
 	AvailabilityGrid.prototype.handleKeyPress = function (event) {
 	  var that = this;
-	  var availGrid = document.querySelector(this.opts.selector);
+	  var availGrid = this.entity;
 	  var rows = availGrid.querySelectorAll('tbody tr');
 	  var numCols = rows[0].querySelectorAll('td').length;
 
@@ -257,10 +278,12 @@
 	  if (event.which == 16) this.shiftKeyDown = false;
 	};
 
-	exports.AvailabilityGrid = AvailabilityGrid;
+	module.exports = {
+	  AvailabilityGrid: AvailabilityGrid
+	};
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -337,7 +360,7 @@
 	exports.getClosest = getClosest;
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -357,7 +380,7 @@
 	exports.getSiblings = getSiblings;
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -390,7 +413,7 @@
 	module.exports = serializeArray;
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -408,4 +431,6 @@
 	module.exports = index;
 
 /***/ }
-/******/ ]);
+/******/ ])
+});
+;
