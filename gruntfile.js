@@ -2,7 +2,7 @@ module.exports = function(grunt) {
   var webpackConfig = require('./webpack.config.js');
   grunt.initConfig({
     dirs:{
-      theme:'../',
+      theme:'./demo/',
       lib:'./lib/',
       assets:'assets/',
       js:'./js/',
@@ -20,7 +20,17 @@ module.exports = function(grunt) {
     copy: {
       misc: {
         files: [{
+            src: './**/*',
+            cwd: '<%= dirs.lib %>spectacular',
+            dest: '<%= dirs.scss %>',
+            expand: true
+        },{
             src: 'bourbon/**/*',
+            cwd: '<%= dirs.lib %>',
+            dest: '<%= dirs.scss %>',
+            expand: true
+        },{
+            src: 'neat/**/*',
             cwd: '<%= dirs.lib %>',
             dest: '<%= dirs.scss %>',
             expand: true
