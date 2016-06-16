@@ -1,7 +1,7 @@
 ## HTML&ndash;first
 `AvailabilityGrid` is progressively enhanced from a semantic HTML `<form>` made up of a `<table>` of&nbsp;`<input type="checkbox>"`.
 
-`AvailabilityGrid` will listen to your grid on inputs and provide functionality to select them in ranges, inverse the selection, navigating the grid with arrow keys, as well as asynchronous considerations for VoiceOver screen reader support.
+`AvailabilityGrid` will listen to your grid of inputs and provide functionality to select them in ranges, inverse the selection, navigating the grid with arrow keys, as well as asynchronous considerations for VoiceOver screen reader support.
 
 ### Demo
 [Try the demo](http://jpdevries.github.io/availability-grid/).
