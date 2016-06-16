@@ -1,4 +1,8 @@
 node_modules
 bower_components
 
+lib
+scss/bourbon
+scss/neat
+
 assets/css/maps

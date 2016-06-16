@@ -15,10 +15,21 @@
     "test",
     "tests"
   ],
-  "dependencies": {
-    "spectacular": "^0.0.0"
+  "exportsOverride": {
+    "spectacular": {
+      "": "app/assets/stylesheets/"
+    },
+    "bourbon": {
+      "": "app/assets/stylesheets/"
+    },
+    "neat": {
+      "": "app/assets/stylesheets/"
+    }
   },
+  "dependencies": {},
   "devDependencies": {
-    "spectacular": "^0.0.0"
+    "spectacular": "^0.0.0",
+    "bourbon": "^4.2.7",
+    "neat": "^1.7.4"
   }
 }

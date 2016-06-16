@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+   <head>
+      <meta charset="UTF-8">
+      <title>Availability Grid</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="./assets/css/availability-grid.css">
+      <style type="text/css">
+        html:not(.grid-added) .grid-fieldset { display:none }
+        body {
+          text-align:center;
+        }
+        #availability-grid-form {
+          max-width:42em;
+          margin-left:auto;
+          margin-right:auto;
+        }
+        .availability-grid {
+          width:100%;
+        }
+        #console {
+          max-width:100%;
+          overflow-x:auto;
+        }
+        #a11y-prefs {
+          margin-bottom:1em;
+        }
+        #a11y-prefs {
+          display:flex;
+          justify-content:center;
+        }
+        #a11y-prefs .selection {
+          padding-top:.75em;
+        }
+      </style>
+      <script>
+        (function(){
+          var html = document.querySelector('html');
+          html.classList.remove('no-js');
+          html.classList.add('js');
+        })();
+      </script>
+   </head>
+   <body>
+      <h1>Availability Grid</h1>
+      <form action="#" id="a11y-prefs">
+        <noscript>Please enable JavaScript for asyncronous features.</noscript>
+        <fieldset class="grid-fieldset">
+          <legend aria-describedby="preferences-desc">Preferences</legend>
+          <p id="preferences-desc" class="a11y-hidden">Manage preferences for Military Time and Week Starts On.</p>
+          <div>
+            <label>Military Time&nbsp;<input type="checkbox" id="military-time" /></label>
+          </div>
+          <div>
+            <span id="which-day" class="a11y-hidden" aria-hidden="true">Which day would you like weeks to start on?</span>
+            <span id="would-mon" class="a11y-hidden" aria-hidden="true">You would like to start weeks on Mondays.</span>
+            <span id="would-sun" class="a11y-hidden" aria-hidden="true">You would like to start weeks on Sundays.</span>
+            <label>Week Starts: <input checked tabindex="0" type="radio" name="week_starts" value="sun" aria-labeledby="sunday which-day" aria-describedby="would-sun" /><span id="sunday">&nbsp;Sunday</span>&ensp;<input tabindex="0" type="radio" name="week_starts" value="mon" aria-labeledby="monday which-day" aria-describedby="would-mon" /><span id="monday">&nbsp;Monday</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="grid-fieldset selection">
+          <legend>Selection</legend>
+          <label>
+            <span class="a11y-hidden">Toggle Availability</span>
+            <button id="inverse">Inverse Selection</button>
+          </label>
+        </fieldset>
+      </form>
+      <form action="#" id="availability-grid-form">
+        <p id="howto" class="a11y-hidden">Tab to the next time slot or use arrow keys navigate the days and&nbsp;times. Hold shift and click another input to toggle ranges.</p>
+        <table id="availability-grid" class="availability-grid">
+           <thead>
+              <tr><th data-dow="sun" data-index="0">Sun<span class="a11y-hidden">day</span></th><th data-dow="mon" data-index="1">Mon<span class="a11y-hidden">day</span></th><th data-dow="tue" data-index="2">Tues<span class="a11y-hidden">day</span></th><th data-dow="wed" data-index="3">Wed<span class="a11y-hidden">nesday</span></th><th data-dow="thur" data-index="4">Thur<span class="a11y-hidden">sday</span></th><th data-dow="fri" data-index="5">Fri<span class="a11y-hidden">day</span></th><th data-dow="sat" data-index="6">Sat<span class="a11y-hidden">urday</span></th></tr>
+           </thead>
+           <tbody>
+              <tr data-time="0"><td data-dow="6" data-index="0"><label for="avail-sun-12am" id="avail-sun-12am-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;12am&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;12am&lt;/time&gt;?">Are you available Sundays at <time>12am</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-12am" id="avail-sun-12am" aria-describedby="avail-sun-12am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-12am" id="avail-mon-12am-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;12am&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;12am&lt;/time&gt;?">Are you available Mondays at <time>12 am</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-12am" id="avail-mon-12am" aria-describedby="avail-mon-12am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-12am" id="avail-tue-12am-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;12am&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;12am&lt;/time&gt;?">Are you available Tuesdays at <time>12am</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-12am" id="avail-tue-12am" aria-describedby="avail-tue-12am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-12am" id="avail-wed-12am-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;12am&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;12am&lt;/time&gt;?">Are you available Wednesdays at <time>12am</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-12am" id="avail-wed-12am" aria-describedby="avail-wed-12am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-12am" id="avail-thur-12am-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;12am&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;12am&lt;/time&gt;?">Are you available Thursdays at <time>12am</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-12am" id="avail-thur-12am" aria-describedby="avail-thur-12am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-12am" id="avail-fri-12am-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;12am&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;12am&lt;/time&gt;?">Are you available Fridays at <time>12am</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-12am" id="avail-fri-12am" aria-describedby="avail-fri-12am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-12am" id="avail-sat-12am-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;12am&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;12am&lt;/time&gt;?">Are you available Saturdays at <time>12am</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-12am" id="avail-sat-12am" aria-describedby="avail-sat-12am-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="1" class=""><td data-dow="6" data-index="0"><label for="avail-sun-1am" id="avail-sun-1am-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;1am&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;1am&lt;/time&gt;?">Are you available Sundays at <time>1am</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-1am" id="avail-sun-1am" aria-describedby="avail-sun-1am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-1am" id="avail-mon-1am-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;1am&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;1am&lt;/time&gt;?">Are you available Mondays at <time>1am</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-1am" id="avail-mon-1am" aria-describedby="avail-mon-1am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" class="" data-index="2"><label for="avail-tue-1am" id="avail-tue-1am-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;1am&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;1am&lt;/time&gt;?">Are you available Tuesdays at <time>1am</time>.</span></label>
+                    <input type="checkbox" name="avail-tue-1am" id="avail-tue-1am" aria-describedby="avail-tue-1am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" class="" data-index="3"><label for="avail-wed-1am" id="avail-wed-1am-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;1am&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;1am&lt;/time&gt;?">Are you available Wednesdays at <time>1am</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-1am" id="avail-wed-1am" aria-describedby="avail-wed-1am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" class="" data-index="4"><label for="avail-thur-1am" id="avail-thur-1am-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;1am&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;1am&lt;/time&gt;?">Are you available Thursdays at <time>1am</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-1am" id="avail-thur-1am" aria-describedby="avail-thur-1am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-1am" id="avail-fri-1am-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;1am&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;1am&lt;/time&gt;?">Are you available Fridays at <time>1am</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-1am" id="avail-fri-1am" aria-describedby="avail-fri-1am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-1am" id="avail-sat-1am-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;1am&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;1am&lt;/time&gt;?">Are you available Saturdays at <time>1am</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-1am" id="avail-sat-1am" aria-describedby="avail-sat-1am-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="2"><td data-dow="6" data-index="0"><label for="avail-sun-2am" id="avail-sun-2am-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;2am&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;2am&lt;/time&gt;?">Are you available Sundays at <time>2am</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-2am" id="avail-sun-2am" aria-describedby="avail-sun-2am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-2am" id="avail-mon-2am-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;2am&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;2am&lt;/time&gt;?">Are you available Mondays at <time>2am</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-2am" id="avail-mon-2am" aria-describedby="avail-mon-2am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-2am" id="avail-tue-2am-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;2am&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;2am&lt;/time&gt;?">Are you available Tuesdays at <time>2am</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-2am" id="avail-tue-2am" aria-describedby="avail-tue-2am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-2am" id="avail-wed-2am-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;2am&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;2am&lt;/time&gt;?">Are you available Wednesdays at <time>2am</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-2am" id="avail-wed-2am" aria-describedby="avail-wed-2am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-2am" id="avail-thur-2am-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;2am&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;2am&lt;/time&gt;?">Are you available Thursdays at <time>2am</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-2am" id="avail-thur-2am" aria-describedby="avail-thur-2am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-2am" id="avail-fri-2am-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;2am&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;2am&lt;/time&gt;?">Are you available Fridays at <time>2am</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-2am" id="avail-fri-2am" aria-describedby="avail-fri-2am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-2am" id="avail-sat-2am-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;2am&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;2am&lt;/time&gt;?">Are you available Saturdays at <time>2am</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-2am" id="avail-sat-2am" aria-describedby="avail-sat-2am-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="3"><td data-dow="6" data-index="0"><label for="avail-sun-3am" id="avail-sun-3am-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;3am&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;3am&lt;/time&gt;?">Are you available Sundays at <time>3am</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-3am" id="avail-sun-3am" aria-describedby="avail-sun-3am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-3am" id="avail-mon-3am-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;3am&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;3am&lt;/time&gt;?">Are you available Mondays at <time>3am</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-3am" id="avail-mon-3am" aria-describedby="avail-mon-3am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-3am" id="avail-tue-3am-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;3am&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;3am&lt;/time&gt;?">Are you available Tuesdays at <time>3am</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-3am" id="avail-tue-3am" aria-describedby="avail-tue-3am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-3am" id="avail-wed-3am-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;3am&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;3am&lt;/time&gt;?">Are you available Wednesdays at <time>3am</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-3am" id="avail-wed-3am" aria-describedby="avail-wed-3am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-3am" id="avail-thur-3am-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;3am&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;3am&lt;/time&gt;?">Are you available Thursdays at <time>3am</time></span></label>
+                    <input type="checkbox" name="avail-thur-3am" id="avail-thur-3am" aria-describedby="avail-thur-3am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-3am" id="avail-fri-3am-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;3am&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;3am&lt;/time&gt;?">Are you available Fridays at <time>3am</time></span></label>
+                    <input type="checkbox" name="avail-fri-3am" id="avail-fri-3am" aria-describedby="avail-fri-3am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-3am" id="avail-sat-3am-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;3am&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;3am&lt;/time&gt;?">Are you available Saturdays at <time>3am</time></span></label>
+                    <input type="checkbox" name="avail-sat-3am" id="avail-sat-3am" aria-describedby="avail-sat-3am-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="4"><td data-dow="6" data-index="0"><label for="avail-sun-4am" id="avail-sun-4am-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;4am&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;4am&lt;/time&gt;?">Are you available Sundays at <time>4am</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-4am" id="avail-sun-4am" aria-describedby="avail-sun-4am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-4am" id="avail-mon-4am-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;4am&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;4am&lt;/time&gt;?">Are you available Mondays at <time>4am</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-4am" id="avail-mon-4am" aria-describedby="avail-mon-4am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-4am" id="avail-tue-4am-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;4am&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;4am&lt;/time&gt;?">Are you available Tuesdays at <time>4am</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-4am" id="avail-tue-4am" aria-describedby="avail-tue-4am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-4am" id="avail-wed-4am-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;4am&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;4am&lt;/time&gt;?">Are you available Wednesdays at <time>4am</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-4am" id="avail-wed-4am" aria-describedby="avail-wed-4am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-4am" id="avail-thur-4am-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;4am&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;4am&lt;/time&gt;?">Are you available Thursdays at <time>4am</time></span></label>
+                    <input type="checkbox" name="avail-thur-4am" id="avail-thur-4am" aria-describedby="avail-thur-4am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-4am" id="avail-fri-4am-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;4am&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;4am&lt;/time&gt;?">Are you available Fridays at <time>4am</time></span></label>
+                    <input type="checkbox" name="avail-fri-4am" id="avail-fri-4am" aria-describedby="avail-fri-4am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-4am" id="avail-sat-4am-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;4am&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;4am&lt;/time&gt;?">Are you available Saturdays at <time>4am</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-4am" id="avail-sat-4am" aria-describedby="avail-sat-4am-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="5" class=""><td data-dow="6" class="" data-index="0"><label for="avail-sun-5am" id="avail-sun-5am-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;5am&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;5am&lt;/time&gt;?">Are you available Sundays at <time>5am</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-5am" id="avail-sun-5am" aria-describedby="avail-sun-5am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-5am" id="avail-mon-5am-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;5am&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;5am&lt;/time&gt;?">Are you available Mondays at <time>5am</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-5am" id="avail-mon-5am" aria-describedby="avail-mon-5am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-5am" id="avail-tue-5am-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;5am&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;5am&lt;/time&gt;?">Are you available Tuesdays at <time>5am</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-5am" id="avail-tue-5am" aria-describedby="avail-tue-5am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-5am" id="avail-wed-5am-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;5am&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;5am&lt;/time&gt;?">Are available Wednesdays at <time>5am</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-5am" id="avail-wed-5am" aria-describedby="avail-wed-5am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-5am" id="avail-thur-5am-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;5am&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;5am&lt;/time&gt;?">Are you available Thursdays at <time>5am</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-5am" id="avail-thur-5am" aria-describedby="avail-thur-5am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" class="" data-index="5"><label for="avail-fri-5am" id="avail-fri-5am-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;5am&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;5am&lt;/time&gt;?">Are you available Fridays at <time>5am</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-5am" id="avail-fri-5am" aria-describedby="avail-fri-5am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" class="" data-index="6"><label for="avail-sat-5am" id="avail-sat-5am-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;5am&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;5am&lt;/time&gt;?">Are you available Saturdays at <time>5am</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-5am" id="avail-sat-5am" aria-describedby="avail-sat-5am-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="6" class=""><td data-dow="6" data-index="0"><label for="avail-sun-6am" id="avail-sun-6am-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;6am&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;6am&lt;/time&gt;?">Are you available Sundays at <time>6am</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-6am" id="avail-sun-6am" aria-describedby="avail-sun-6am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" class="" data-index="1"><label for="avail-mon-6am" id="avail-mon-6am-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;6am&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;6am&lt;/time&gt;?">Are you available Mondays at <time>6am</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-6am" id="avail-mon-6am" aria-describedby="avail-mon-6am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" class="" data-index="2"><label for="avail-tue-6am" id="avail-tue-6am-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;6am&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;6am&lt;/time&gt;?">Are you available Tuesdays at <time>6am</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-6am" id="avail-tue-6am" aria-describedby="avail-tue-6am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" class="" data-index="3"><label for="avail-wed-6am" id="avail-wed-6am-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;6am&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;6am&lt;/time&gt;?">Are you available Wednesdays at <time>6am</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-6am" id="avail-wed-6am" aria-describedby="avail-wed-6am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" class="" data-index="4"><label for="avail-thur-6am" id="avail-thur-6am-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;6am&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;6am&lt;/time&gt;?">Are you available Thursdays at <time>6am</time></span></label>
+                    <input type="checkbox" name="avail-thur-6am" id="avail-thur-6am" aria-describedby="avail-thur-6am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" class="" data-index="5"><label for="avail-fri-6am" id="avail-fri-6am-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;6am&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;6am&lt;/time&gt;?">Are you available Fridays at <time>6am</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-6am" id="avail-fri-6am" aria-describedby="avail-fri-6am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" class="" data-index="6"><label for="avail-sat-6am" id="avail-sat-6am-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;6am&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;6am&lt;/time&gt;?">Are you available Saturdays at <time>6am</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-6am" id="avail-sat-6am" aria-describedby="avail-sat-6am-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="7"><td data-dow="6" data-index="0"><label for="avail-sun-7am" id="avail-sun-7am-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;7am&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;7am&lt;/time&gt;?">Are you available Sundays at <time>7am</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-7am" id="avail-sun-7am" aria-describedby="avail-sun-7am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-7am" id="avail-mon-7am-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;7am&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;7am&lt;/time&gt;?">Are you available Mondays at <time>7am</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-7am" id="avail-mon-7am" aria-describedby="avail-mon-7am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-7am" id="avail-tue-7am-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;7am&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;7am&lt;/time&gt;?">Are you available Tuesdays at <time>7am</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-7am" id="avail-tue-7am" aria-describedby="avail-tue-7am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-7am" id="avail-wed-7am-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;7am&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;7am&lt;/time&gt;?">Are you available Wednesdays at <time>7am</time></span></label>
+                    <input type="checkbox" name="avail-wed-7am" id="avail-wed-7am" aria-describedby="avail-wed-7am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-7am" id="avail-thur-7am-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;7am&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;7am&lt;/time&gt;?">Are you available Thursdays at <time>7am</time></span></label>
+                    <input type="checkbox" name="avail-thur-7am" id="avail-thur-7am" aria-describedby="avail-thur-7am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-7am" id="avail-fri-7am-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;7am&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;7am&lt;/time&gt;?">Are you available Fridays at <time>7am</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-7am" id="avail-fri-7am" aria-describedby="avail-fri-7am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-7am" id="avail-sat-7am-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;7am&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;7am&lt;/time&gt;?">Are you available Saturdays at <time>7am</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-7am" id="avail-sat-7am" aria-describedby="avail-sat-7am-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="8"><td data-dow="6" data-index="0"><label for="avail-sun-8am" id="avail-sun-8am-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;8am&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;8am&lt;/time&gt;?">Are you available Sundays at <time>8am</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-8am" id="avail-sun-8am" aria-describedby="avail-sun-8am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-8am" id="avail-mon-8am-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;8am&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;8am&lt;/time&gt;?">Are you available Mondays at <time>8am</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-8am" id="avail-mon-8am" aria-describedby="avail-mon-8am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-8am" id="avail-tue-8am-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;8am&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;8am&lt;/time&gt;?">Are you available Tuesdays at <time>8am</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-8am" id="avail-tue-8am" aria-describedby="avail-tue-8am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-8am" id="avail-wed-8am-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;8am&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;8am&lt;/time&gt;?">Are you available Wednesdays at <time>8am</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-8am" id="avail-wed-8am" aria-describedby="avail-wed-8am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-8am" id="avail-thur-8am-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;8am&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;8am&lt;/time&gt;?">Are you available Thursdays at <time>8am</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-8am" id="avail-thur-8am" aria-describedby="avail-thur-8am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-8am" id="avail-fri-8am-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;8am&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;8am&lt;/time&gt;?">Are you available Fridays at <time>8am</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-8am" id="avail-fri-8am" aria-describedby="avail-fri-8am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-8am" id="avail-sat-8am-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;8am&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;8am&lt;/time&gt;?">Are you available Saturdays at <time>8am</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-8am" id="avail-sat-8am" aria-describedby="avail-sat-8am-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="9" class="selected"><td data-dow="6" data-index="0"><label for="avail-sun-9am" id="avail-sun-9am-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;9am&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;9am&lt;/time&gt;?">Are you available Sundays at <time>9am</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-9am" id="avail-sun-9am" aria-describedby="avail-sun-9am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" class="selected" data-index="1"><label for="avail-mon-9am" id="avail-mon-9am-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;9am&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;9am&lt;/time&gt;?">Are you available Mondays at <time>9am</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-9am" id="avail-mon-9am" aria-describedby="avail-mon-9am-label howto" autofocus="">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-9am" id="avail-tue-9am-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;9am&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;9am&lt;/time&gt;?">Are you available Tuesdays at <time>9am</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-9am" id="avail-tue-9am" aria-describedby="avail-tue-9am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-9am" id="avail-wed-9am-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;9am&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;9am&lt;/time&gt;?">Are you available Wednesdays at <time>9am</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-9am" id="avail-wed-9am" aria-describedby="avail-wed-9am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-9am" id="avail-thur-9am-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;9am&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;9am&lt;/time&gt;?">Are you available Thursdays at <time>9am</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-9am" id="avail-thur-9am" aria-describedby="avail-thur-9am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-9am" id="avail-fri-9am-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;9am&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;9am&lt;/time&gt;?">Are you available Fridays at <time>9am</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-9am" id="avail-fri-9am" aria-describedby="avail-fri-9am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-9am" id="avail-sat-9am-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;9am&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;9am&lt;/time&gt;?">Are you available Saturdays at <time>9am</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-9am" id="avail-sat-9am" aria-describedby="avail-sat-9am-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="10"><td data-dow="6" data-index="0"><label for="avail-sun-10am" id="avail-sun-10am-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;10am&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;10am&lt;/time&gt;?">Are you available Sundays at <time>10am</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-10am" id="avail-sun-10am" aria-describedby="avail-sun-10am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-10am" id="avail-mon-10am-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;10am&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;10am&lt;/time&gt;?">Are you available Mondays at <time>10am</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-10am" id="avail-mon-10am" aria-describedby="avail-mon-10am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-10am" id="avail-tue-10am-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;10am&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;10am&lt;/time&gt;?">Are you available Tuesdays at <time>10am</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-10am" id="avail-tue-10am" aria-describedby="avail-tue-10am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-10am" id="avail-wed-10am-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;10am&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;10am&lt;/time&gt;?">Are you available Wednesdays at <time>10am</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-10am" id="avail-wed-10am" aria-describedby="avail-wed-10am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-10am" id="avail-thur-10am-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;10am&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;10am&lt;/time&gt;?">Are you available Thursdays at <time>10am</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-10am" id="avail-thur-10am" aria-describedby="avail-thur-10am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-10am" id="avail-fri-10am-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;10am&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;10am&lt;/time&gt;?">Are you available Fridays at <time>10am</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-10am" id="avail-fri-10am" aria-describedby="avail-fri-10am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-10am" id="avail-sat-10am-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;10am&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;10am&lt;/time&gt;?">Are you available Saturdays at <time>10am</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-10am" id="avail-sat-10am" aria-describedby="avail-sat-10am-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="11"><td data-dow="6" data-index="0"><label for="avail-sun-11am" id="avail-sun-11am-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;11am&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;11am&lt;/time&gt;?">Are you available Sundays at <time>11am</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-11am" id="avail-sun-11am" aria-describedby="avail-sun-11am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-11am" id="avail-mon-11am-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;11am&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;11am&lt;/time&gt;?">Are you available Mondays at <time>11am</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-11am" id="avail-mon-11am" aria-describedby="avail-mon-11am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-11am" id="avail-tue-11am-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;11am&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;11am&lt;/time&gt;?">Are you available Tuesdays at <time>11am</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-11am" id="avail-tue-11am" aria-describedby="avail-tue-11am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-11am" id="avail-wed-11am-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;11am&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;11am&lt;/time&gt;?">Are you available Wednesdays at <time>11am</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-11am" id="avail-wed-11am" aria-describedby="avail-wed-11am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-11am" id="avail-thur-11am-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;11am&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;11am&lt;/time&gt;?">Are you available Thursdays at <time>11am</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-11am" id="avail-thur-11am" aria-describedby="avail-thur-11am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-11am" id="avail-fri-11am-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;11am&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;11am&lt;/time&gt;?">Are you available Fridays at <time>11am</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-11am" id="avail-fri-11am" aria-describedby="avail-fri-11am-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-11am" id="avail-sat-11am-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;11am&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;11am&lt;/time&gt;?">Are you available Saturdays at <time>11am</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-11am" id="avail-sat-11am" aria-describedby="avail-sat-11am-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="12"><td data-dow="6" data-index="0"><label for="avail-sun-12pm" id="avail-sun-12pm-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;12pm&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;12pm&lt;/time&gt;?">Are you available Sundays at <time>12pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-12pm" id="avail-sun-12pm" aria-describedby="avail-sun-12pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-12pm" id="avail-mon-12pm-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;12pm&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;12pm&lt;/time&gt;?">Are you available Mondays at <time>12pm</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-12pm" id="avail-mon-12pm" aria-describedby="avail-mon-12pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-12pm" id="avail-tue-12pm-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;12pm&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;12pm&lt;/time&gt;?">Are you available Tuesdays at <time>12pm</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-12pm" id="avail-tue-12pm" aria-describedby="avail-tue-12pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-12pm" id="avail-wed-12pm-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;12pm&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;12pm&lt;/time&gt;?">Are you available Wednesdays at <time>12pm</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-12pm" id="avail-wed-12pm" aria-describedby="avail-wed-12pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-12pm" id="avail-thur-12pm-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;12pm&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;12pm&lt;/time&gt;?">Are you available Thursdays at <time>12pm</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-12pm" id="avail-thur-12pm" aria-describedby="avail-thur-12pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-12pm" id="avail-fri-12pm-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;12pm&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;12pm&lt;/time&gt;?">Are you available Fridays at <time>12pm</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-12pm" id="avail-fri-12pm" aria-describedby="avail-fri-12pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-12pm" id="avail-sat-12pm-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;12pm&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;12pm&lt;/time&gt;?">Are you available Saturdays at <time>12pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-12pm" id="avail-sat-12pm" aria-describedby="avail-sat-12pm-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="13"><td data-dow="6" data-index="0"><label for="avail-sun-1pm" id="avail-sun-1pm-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;1pm&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;1pm&lt;/time&gt;?">Are you available Sundays at <time>1pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-1pm" id="avail-sun-1pm" aria-describedby="avail-sun-1pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-1pm" id="avail-mon-1pm-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;1pm&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;1pm&lt;/time&gt;?">Are you available Mondays at <time>1pm</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-1pm" id="avail-mon-1pm" aria-describedby="avail-mon-1pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-1pm" id="avail-tue-1pm-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;1pm&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;1pm&lt;/time&gt;?">Are you available Tuesdays at <time>1pm</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-1pm" id="avail-tue-1pm" aria-describedby="avail-tue-1pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-1pm" id="avail-wed-1pm-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;1pm&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;1pm&lt;/time&gt;?">Are you available Wednesdays at <time>1pm</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-1pm" id="avail-wed-1pm" aria-describedby="avail-wed-1pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-1pm" id="avail-thur-1pm-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;1pm&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;1pm&lt;/time&gt;?">Are you available Thursdays at <time>1pm</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-1pm" id="avail-thur-1pm" aria-describedby="avail-thur-1pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-1pm" id="avail-fri-1pm-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;1pm&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;1pm&lt;/time&gt;?">Are you available Fridays at <time>1pm</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-1pm" id="avail-fri-1pm" aria-describedby="avail-fri-1pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-1pm" id="avail-sat-1pm-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;1pm&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;1pm&lt;/time&gt;?">Are you available Saturdays at <time>1pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-1pm" id="avail-sat-1pm" aria-describedby="avail-sat-1pm-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="14"><td data-dow="6" data-index="0"><label for="avail-sun-2pm" id="avail-sun-2pm-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;2pm&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;2pm&lt;/time&gt;?">Are you available Sundays at <time>2pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-2pm" id="avail-sun-2pm" aria-describedby="avail-sun-2pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-2pm" id="avail-mon-2pm-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;2pm&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;2pm&lt;/time&gt;?">Are you available Mondays at <time>2pm</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-2pm" id="avail-mon-2pm" aria-describedby="avail-mon-2pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-2pm" id="avail-tue-2pm-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;2pm&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;2pm&lt;/time&gt;?">Are you available Tuesdays at <time>2pm</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-2pm" id="avail-tue-2pm" aria-describedby="avail-tue-2pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-2pm" id="avail-wed-2pm-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;2pm&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;2pm&lt;/time&gt;?">Are you available Wednesdays at <time>2pm</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-2pm" id="avail-wed-2pm" aria-describedby="avail-wed-2pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-2pm" id="avail-thur-2pm-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;2pm&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;2pm&lt;/time&gt;?">Are you available Thursdays at <time>2pm</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-2pm" id="avail-thur-2pm" aria-describedby="avail-thur-2pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-2pm" id="avail-fri-2pm-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;2pm&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;2pm&lt;/time&gt;?">Are you available Fridays at <time>2pm</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-2pm" id="avail-fri-2pm" aria-describedby="avail-fri-2pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-2pm" id="avail-sat-2pm-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;2pm&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;2pm&lt;/time&gt;?">Are you available Saturdays at <time>2pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-2pm" id="avail-sat-2pm" aria-describedby="avail-sat-2pm-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="15"><td data-dow="6" data-index="0"><label for="avail-sun-3pm" id="avail-sun-3pm-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;3pm&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;3pm&lt;/time&gt;?">Are you available Sundays at <time>3pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-3pm" id="avail-sun-3pm" aria-describedby="avail-sun-3pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-3pm" id="avail-mon-3pm-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;3pm&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;3pm&lt;/time&gt;?">Are you available Mondays at <time>3pm</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-3pm" id="avail-mon-3pm" aria-describedby="avail-mon-3pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-3pm" id="avail-tue-3pm-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;3pm&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;3pm&lt;/time&gt;?">Are you available Tuesdays at <time>3pm</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-3pm" id="avail-tue-3pm" aria-describedby="avail-tue-3pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-3pm" id="avail-wed-3pm-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;3pm&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;3pm&lt;/time&gt;?">Are you available Wednesdays at <time>3pm</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-3pm" id="avail-wed-3pm" aria-describedby="avail-wed-3pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-3pm" id="avail-thur-3pm-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;3pm&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;3pm&lt;/time&gt;?">Are you available Thursdays at <time>3pm</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-3pm" id="avail-thur-3pm" aria-describedby="avail-thur-3pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-3pm" id="avail-fri-3pm-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;3pm&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;3pm&lt;/time&gt;?">Are you available Fridays at <time>3pm</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-3pm" id="avail-fri-3pm" aria-describedby="avail-fri-3pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-3pm" id="avail-sat-3pm-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;3pm&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;3pm&lt;/time&gt;?">Are you available Saturdays at <time>3pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-3pm" id="avail-sat-3pm" aria-describedby="avail-sat-3pm-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="16"><td data-dow="6" data-index="0"><label for="avail-sun-4pm" id="avail-sun-4pm-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;4pm&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;4pm&lt;/time&gt;?">Are you available Sundays at <time>4pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-4pm" id="avail-sun-4pm" aria-describedby="avail-sun-4pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-4pm" id="avail-mon-4pm-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;4pm&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;4pm&lt;/time&gt;?">Are you available Mondays at <time>4pm</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-4pm" id="avail-mon-4pm" aria-describedby="avail-mon-4pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-4pm" id="avail-tue-4pm-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;4pm&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;4pm&lt;/time&gt;?">Are you available Tuesdays at <time>4pm</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-4pm" id="avail-tue-4pm" aria-describedby="avail-tue-4pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-4pm" id="avail-wed-4pm-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;4pm&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;4pm&lt;/time&gt;?">Are you available Wednesdays at <time>4pm</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-4pm" id="avail-wed-4pm" aria-describedby="avail-wed-4pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-4pm" id="avail-thur-4pm-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;4pm&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;4pm&lt;/time&gt;?">Are you available Thursdays at <time>4pm</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-4pm" id="avail-thur-4pm" aria-describedby="avail-thur-4pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-4pm" id="avail-fri-4pm-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;4pm&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;4pm&lt;/time&gt;?">Are you available Fridays at <time>4pm</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-4pm" id="avail-fri-4pm" aria-describedby="avail-fri-4pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-4pm" id="avail-sat-4pm-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;4pm&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;4pm&lt;/time&gt;?">Are you available Saturdays at <time>4pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-4pm" id="avail-sat-4pm" aria-describedby="avail-sat-4pm-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="17"><td data-dow="6" data-index="0"><label for="avail-sun-5pm" id="avail-sun-5pm-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;5pm&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;5pm&lt;/time&gt;?">Are you available Sundays at <time>5pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-5pm" id="avail-sun-5pm" aria-describedby="avail-sun-5pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-5pm" id="avail-mon-5pm-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;5pm&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;5pm&lt;/time&gt;?">Are you available Mondays at <time>5pm</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-5pm" id="avail-mon-5pm" aria-describedby="avail-mon-5pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-5pm" id="avail-tue-5pm-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;5pm&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;5pm&lt;/time&gt;?">Are you available Tuesdays at <time>5pm</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-5pm" id="avail-tue-5pm" aria-describedby="avail-tue-5pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-5pm" id="avail-wed-5pm-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;5pm&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;5pm&lt;/time&gt;?">Are you available Wednesdays at <time>5pm</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-5pm" id="avail-wed-5pm" aria-describedby="avail-wed-5pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-5pm" id="avail-thur-5pm-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;5pm&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;5pm&lt;/time&gt;?">Are you available Thursdays at <time>5pm</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-5pm" id="avail-thur-5pm" aria-describedby="avail-thur-5pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-5pm" id="avail-fri-5pm-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;5pm&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;5pm&lt;/time&gt;?">Are you available Fridays at <time>5pm</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-5pm" id="avail-fri-5pm" aria-describedby="avail-fri-5pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-5pm" id="avail-sat-5pm-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;5pm&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;5pm&lt;/time&gt;?">Are you available Saturdays at <time>5pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-5pm" id="avail-sat-5pm" aria-describedby="avail-sat-5pm-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="18"><td data-dow="6" data-index="0"><label for="avail-sun-6pm" id="avail-sun-6pm-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;6pm&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;6pm&lt;/time&gt;?">Are you available Sundays at <time>6pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-6pm" id="avail-sun-6pm" aria-describedby="avail-sun-6pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-6pm" id="avail-mon-6pm-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;6pm&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;6pm&lt;/time&gt;?">Are you available Mondays at <time>6pm</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-6pm" id="avail-mon-6pm" aria-describedby="avail-mon-6pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-6pm" id="avail-tue-6pm-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;6pm&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;6pm&lt;/time&gt;?">Are you available Tuesdays at <time>6pm</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-6pm" id="avail-tue-6pm" aria-describedby="avail-tue-6pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-6pm" id="avail-wed-6pm-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;6pm&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;6pm&lt;/time&gt;?">Are you available Wednesdays at <time>6pm</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-6pm" id="avail-wed-6pm" aria-describedby="avail-wed-6pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-6pm" id="avail-thur-6pm-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;6pm&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;6pm&lt;/time&gt;?">Are you available Thursdays at <time>6pm</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-6pm" id="avail-thur-6pm" aria-describedby="avail-thur-6pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-6pm" id="avail-fri-6pm-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;6pm&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;6pm&lt;/time&gt;?">Are you available Fridays at <time>6pm</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-6pm" id="avail-fri-6pm" aria-describedby="avail-fri-6pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-6pm" id="avail-sat-6pm-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;6pm&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;6pm&lt;/time&gt;?">Are you available Saturdays at <time>6pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-6pm" id="avail-sat-6pm" aria-describedby="avail-sat-6pm-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="19"><td data-dow="6" data-index="0"><label for="avail-sun-7pm" id="avail-sun-7pm-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;7pm&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;7pm&lt;/time&gt;?">Are you available Sundays at <time>7pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-7pm" id="avail-sun-7pm" aria-describedby="avail-sun-7pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-7pm" id="avail-mon-7pm-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;7pm&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;7pm&lt;/time&gt;?">Are you available Mondays at <time>7pm</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-7pm" id="avail-mon-7pm" aria-describedby="avail-mon-7pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-7pm" id="avail-tue-7pm-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;7pm&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;7pm&lt;/time&gt;?">Are you available Tuesdays at <time>7pm</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-7pm" id="avail-tue-7pm" aria-describedby="avail-tue-7pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-7pm" id="avail-wed-7pm-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;7pm&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;7pm&lt;/time&gt;?">Are you available Wednesdays at <time>7pm</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-7pm" id="avail-wed-7pm" aria-describedby="avail-wed-7pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-7pm" id="avail-thur-7pm-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;7pm&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;7pm&lt;/time&gt;?">Are you available Thursdays at <time>7pm</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-7pm" id="avail-thur-7pm" aria-describedby="avail-thur-7pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-7pm" id="avail-fri-7pm-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;7pm&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;7pm&lt;/time&gt;?">Are you available Fridays at <time>7pm</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-7pm" id="avail-fri-7pm" aria-describedby="avail-fri-7pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-7pm" id="avail-sat-7pm-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;7pm&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;7pm&lt;/time&gt;?">Are you available Saturdays at <time>7pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-7pm" id="avail-sat-7pm" aria-describedby="avail-sat-7pm-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="20"><td data-dow="6" data-index="0"><label for="avail-sun-8pm" id="avail-sun-8pm-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;8pm&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;8pm&lt;/time&gt;?">Are you available Sundays at <time>8pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-8pm" id="avail-sun-8pm" aria-describedby="avail-sun-8pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-8pm" id="avail-mon-8pm-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;8pm&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;8pm&lt;/time&gt;?">Are you available Mondays at <time>8pm</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-8pm" id="avail-mon-8pm" aria-describedby="avail-mon-8pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-8pm" id="avail-tue-8pm-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;8pm&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;8pm&lt;/time&gt;?">Are you available Tuesdays at <time>8pm</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-8pm" id="avail-tue-8pm" aria-describedby="avail-tue-8pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-8pm" id="avail-wed-8pm-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;8pm&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;8pm&lt;/time&gt;?">Are you available Wednesdays at <time>8pm</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-8pm" id="avail-wed-8pm" aria-describedby="avail-wed-8pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-8pm" id="avail-thur-8pm-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;8pm&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;8pm&lt;/time&gt;?">Are you available Thursdays at <time>8pm</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-8pm" id="avail-thur-8pm" aria-describedby="avail-thur-8pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-8pm" id="avail-fri-8pm-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;8pm&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;8pm&lt;/time&gt;?">Are you available Fridays at <time>8pm</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-8pm" id="avail-fri-8pm" aria-describedby="avail-fri-8pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-8pm" id="avail-sat-8pm-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;8pm&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;8pm&lt;/time&gt;?">Are you available Saturdays at <time>8pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-8pm" id="avail-sat-8pm" aria-describedby="avail-sat-8pm-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="21"><td data-dow="6" data-index="0"><label for="avail-sun-9pm" id="avail-sun-9pm-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;9pm&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;9pm&lt;/time&gt;?">Are you available Sundays at <time>9pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-9pm" id="avail-sun-9pm" aria-describedby="avail-sun-9pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-9pm" id="avail-mon-9pm-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;9pm&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;9pm&lt;/time&gt;?">Are you available Mondays at <time>9pm</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-9pm" id="avail-mon-9pm" aria-describedby="avail-mon-9pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-9pm" id="avail-tue-9pm-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;9pm&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;9pm&lt;/time&gt;?">Are you available Tuesdays at <time>9pm</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-9pm" id="avail-tue-9pm" aria-describedby="avail-tue-9pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-9pm" id="avail-wed-9pm-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;9pm&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;9pm&lt;/time&gt;?">Are you available Wednesdays at <time>9pm</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-9pm" id="avail-wed-9pm" aria-describedby="avail-wed-9pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-9pm" id="avail-thur-9pm-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;9pm&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;9pm&lt;/time&gt;?">Are you available Thursdays at <time>9pm</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-9pm" id="avail-thur-9pm" aria-describedby="avail-thur-9pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-9pm" id="avail-fri-9pm-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;9pm&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;9pm&lt;/time&gt;?">Are you available Fridays at <time>9pm</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-9pm" id="avail-fri-9pm" aria-describedby="avail-fri-9pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-9pm" id="avail-sat-9pm-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;9pm&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;9pm&lt;/time&gt;?">Are you available Saturdays at <time>9pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-9pm" id="avail-sat-9pm" aria-describedby="avail-sat-9pm-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="22"><td data-dow="6" data-index="0"><label for="avail-sun-10pm" id="avail-sun-10pm-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;10pm&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;10pm&lt;/time&gt;?">Are you available Sundays at <time>10pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-10pm" id="avail-sun-10pm" aria-describedby="avail-sun-10pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-10pm" id="avail-mon-10pm-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;10pm&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;10pm&lt;/time&gt;?">Are you available Mondays at <time>10pm</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-10pm" id="avail-mon-10pm" aria-describedby="avail-mon-10pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-10pm" id="avail-tue-10pm-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;10pm&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;10pm&lt;/time&gt;?">Are you available Tuesdays at <time>10pm</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-10pm" id="avail-tue-10pm" aria-describedby="avail-tue-10pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-10pm" id="avail-wed-10pm-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;10pm&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;10pm&lt;/time&gt;?">Are you available Wednesdays at <time>10pm</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-10pm" id="avail-wed-10pm" aria-describedby="avail-wed-10pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-10pm" id="avail-thur-10pm-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;10pm&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;10pm&lt;/time&gt;?">Are you available Thursdays at <time>10pm</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-10pm" id="avail-thur-10pm" aria-describedby="avail-thur-10pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-10pm" id="avail-fri-10pm-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;10pm&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;10pm&lt;/time&gt;?">Are you available Fridays at <time>10pm</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-10pm" id="avail-fri-10pm" aria-describedby="avail-fri-10pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-10pm" id="avail-sat-10pm-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;10pm&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;10pm&lt;/time&gt;?">Are you available Saturdays at <time>10pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-10pm" id="avail-sat-10pm" aria-describedby="avail-sat-10pm-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+              <tr data-time="23"><td data-dow="6" data-index="0"><label for="avail-sun-11pm" id="avail-sun-11pm-label"><span class="a11y-hidden" data-checked-time="You are available Sundays at &lt;time&gt;11pm&lt;/time&gt;." data-unchecked-time="Are you available Sundays at &lt;time&gt;11pm&lt;/time&gt;?">Are you available Sundays at <time>11pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sun-11pm" id="avail-sun-11pm" aria-describedby="avail-sun-11pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="0" data-index="1"><label for="avail-mon-11pm" id="avail-mon-11pm-label"><span class="a11y-hidden" data-checked-time="You are available Mondays at &lt;time&gt;11pm&lt;/time&gt;." data-unchecked-time="Are you available Mondays at &lt;time&gt;11pm&lt;/time&gt;?">Are you available Mondays at <time>11pm</time>?</span></label>
+                    <input type="checkbox" name="avail-mon-11pm" id="avail-mon-11pm" aria-describedby="avail-mon-11pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="1" data-index="2"><label for="avail-tue-11pm" id="avail-tue-11pm-label"><span class="a11y-hidden" data-checked-time="You are available Tuesdays at &lt;time&gt;11pm&lt;/time&gt;." data-unchecked-time="Are you available Tuesdays at &lt;time&gt;11pm&lt;/time&gt;?">Are you available Tuesdays at <time>11pm</time>?</span></label>
+                    <input type="checkbox" name="avail-tue-11pm" id="avail-tue-11pm" aria-describedby="avail-tue-11pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="2" data-index="3"><label for="avail-wed-11pm" id="avail-wed-11pm-label"><span class="a11y-hidden" data-checked-time="You are available Wednesdays at &lt;time&gt;11pm&lt;/time&gt;." data-unchecked-time="Are you available Wednesdays at &lt;time&gt;11pm&lt;/time&gt;?">Are you available Wednesdays at <time>11pm</time>?</span></label>
+                    <input type="checkbox" name="avail-wed-11pm" id="avail-wed-11pm" aria-describedby="avail-wed-11pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="3" data-index="4"><label for="avail-thur-11pm" id="avail-thur-11pm-label"><span class="a11y-hidden" data-checked-time="You are available Thursdays at &lt;time&gt;11pm&lt;/time&gt;." data-unchecked-time="Are you available Thursdays at &lt;time&gt;11pm&lt;/time&gt;?">Are you available Thursdays at <time>11pm</time>?</span></label>
+                    <input type="checkbox" name="avail-thur-11pm" id="avail-thur-11pm" aria-describedby="avail-thur-11pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="4" data-index="5"><label for="avail-fri-11pm" id="avail-fri-11pm-label"><span class="a11y-hidden" data-checked-time="You are available Fridays at &lt;time&gt;11pm&lt;/time&gt;." data-unchecked-time="Are you available Fridays at &lt;time&gt;11pm&lt;/time&gt;?">Are you available Fridays at <time>11pm</time>?</span></label>
+                    <input type="checkbox" name="avail-fri-11pm" id="avail-fri-11pm" aria-describedby="avail-fri-11pm-label howto">
+                    <div>
+                    </div>
+                 </td><td data-dow="5" data-index="6"><label for="avail-sat-11pm" id="avail-sat-11pm-label"><span class="a11y-hidden" data-checked-time="You are available Saturdays at &lt;time&gt;11pm&lt;/time&gt;." data-unchecked-time="Are you available Saturdays at &lt;time&gt;11pm&lt;/time&gt;?">Are you available Saturdays at <time>11pm</time>?</span></label>
+                    <input type="checkbox" name="avail-sat-11pm" id="avail-sat-11pm" aria-describedby="avail-sat-11pm-label howto">
+                    <div>
+                    </div>
+                 </td></tr>
+           </tbody>
+        </table>
+        <footer>
+          <button type="submit">Submit</button>
+          <script>document.write('<h2 id="console-header" style="display:none">Console</h2><pre id="console"></pre>')</script>
+        </footer>
+      </form>
+      <!--script defer src="https://code.jquery.com/jquery-2.2.4.js"   integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="   crossorigin="anonymous"></script-->
+      <script defer src="./assets/js/availability-grid.js"></script>
+      <script defer>
+        var grid;
+        document.addEventListener('DOMContentLoaded',function(){
+          grid = new AvailabilityGrid();
+        });
+      </script>
+      <!-- http://stuk.github.io/require1k/ -->
+      <script defer>R=function(e,n,v1){function t(e,o,u,a){if(e.g)return o(e.e,e);var c=e.g=e.l,f=new XMLHttpRequest;f.onload=function(i,l){function s(){l--||o(n,e)}200==f.status||e.t?(i=[],(e.t=e.t||f.response).replace(/(?:^|[^\w\$_.])require\s*\(\s*["']([^"']*)["']\s*\)/g,function(e,n){i.push(n)}),l=i.length,i.map(function(o){t(r(e.l,o),s,"."!=o[0]?c+"/../":n,o)}),s()):u?t(e.n=r(u+="../",a),o,u,a):(e.e=f,o(f,e))},e.t?f.onload():(f.open("GET",c,!0),f.send())}function r(e,n,t){if(e.e)throw e.e;return n?(f.href=e,i.href="."!=n[0]?"./node_modules/"+n:n,t=i.href+".js",f.href="",u[t]=u[t]||{l:t}):e.n?r(e.n):(e[c]||(e.f||a("(function(require,"+c+",module){"+e.t+"\n})//# sourceURL="+e.l))(function(n){return r(r(e.l,n))},e[c]={},e),e[c])}function o(e,n){t(e.call?{l:"",t:""+e,f:e}:r("",e),function(t,o){try{e=r(o)}catch(u){t=u}n&&n(t,e)})}var u={},a=eval,c="createElement",f=e[c]("base"),i=e[c]("a");return e.head.appendChild(f),c=e.querySelector("script[data-main]"),c&&o(c.dataset.main),c="exports",o}(document);</script>
+      <script defer>
+      document.addEventListener('DOMContentLoaded', function() {
+        R(function(require, module, exports){
+          var serializeArray = require('./assets/js/vendor/serializearray');
+          var form = document.getElementById('availability-grid-form');
+          // create the grid, assigns keyboard and input listeners, batch invert method
+
+          document.querySelector('html').classList.add('grid-added');
+
+          form.addEventListener('submit',function(event){
+            event.preventDefault();
+            console.log('submit',serializeArray(this));
+            document.getElementById('console-header').style.display = 'block';
+            document.getElementById('console').innerHTML = JSON.stringify(serializeArray(this), null, 1);
+          },false);
+        });
+      });
+      </script>
+      <script defer>
+      (function(){
+        var btn = document.getElementById("inverse");
+        btn.addEventListener("click",function(event){
+          event.preventDefault();
+          grid.inverse();
+        });
+      })();
+      </script>
+      <script defer>
+        (function(){
+          var availGrid = document.getElementById('availability-grid-form');
+          var availGridTable = availGrid.querySelector('.availability-grid');
+          var militaryTime = document.getElementById('military-time');
+          militaryTime.addEventListener('change',function(event){
+            if(event.target.checked) {
+              availGridTable.setAttribute('data-military-time','');
+            } else {
+              availGridTable.removeAttribute('data-military-time');
+            }
+          });
+        })();
+      </script>
+      <script defer>
+      (function(){
+        var weekStarts = document.querySelectorAll('input[name="week_starts"]');
+        for(var i = 0; i < weekStarts.length; i++) {
+          weekStarts[i].addEventListener('change',function(event){
+            var ths = Array.prototype.slice.call(document.querySelectorAll('.availability-grid thead th')),
+            trs = Array.prototype.slice.call(document.querySelectorAll('.availability-grid tbody tr')),
+            sunFirst = event.target.value == 'sun';
+
+            if (sunFirst) {
+              var s = '';
+              if (ths[0].getAttribute('data-dow') !== 'sun') {
+                ths.unshift(ths.pop()); // pop sunday off the end and add it back at the beginning
+
+                trs.map(function (tr) {
+                  var tds = getTDs(tr);
+                  tds.unshift(tds.pop());
+                  reappendChildrenInOrder(tr,tds);
+                });
+              }
+            } else {
+              if (ths[0].getAttribute('data-dow') !== 'mon') {
+                ths.push(ths.shift());
+
+                trs.map(function (tr) {
+                  var tds = getTDs(tr);
+                  tds.push(tds.shift());
+                  reappendChildrenInOrder(tr,tds);
+                });
+              }
+            }
+
+            reappendChildrenInOrder(document.querySelector('.availability-grid thead tr'), ths);
+
+            function getTDs(tr) {
+              return Array.prototype.slice.call(tr.querySelectorAll('td'));
+            }
+
+            function reappendChildrenInOrder(parent,elems) {
+              parent.innerHTML = '';
+              var s = '';
+              var i = 0;
+              elems.map(function (elem) {
+                elem.setAttribute('data-index',i);
+                parent.appendChild(elem);
+                i++;
+              });
+              return parent;
+            }
+          });
+        }
+      })();
+      </script>
+   </body>
+</html>

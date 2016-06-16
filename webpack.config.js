@@ -6,7 +6,7 @@ module.exports = {
     'availability-grid':['./js/availability-grid.js']
   },
   output: {
-    path: '../assets/js/',
+    path: './demo/assets/js/',
     filename: '[name].js',
     libraryTarget: 'umd'
   },
