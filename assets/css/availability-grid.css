@@ -1,3 +1,12 @@
+html {
+  box-sizing: border-box; }
+
+*, *::after, *::before {
+  box-sizing: inherit; }
+
+/*
+http://www.phase2technology.com/blog/exploring-maps-in-sass-3-3/
+*/
 .a11y-hidden {
   position: absolute;
   height: 1px;
