@@ -112,7 +112,7 @@ The Shift key can be used to select ranges of inputs. When focused on a cell, ho
 ![](http://j4p.us/0i3l3S3F3I1B/inverse-selection.gif)
 
 ### VoiceOver Usage
-Accessibly hidden text is used to make screen readers read aloud a question like "Are you available Mondays at 9am?" or a statement like "You are available Mondays at 9am."&nbsp;accordingly.
+Accessibly hidden text is used to make screen readers read aloud a question like "Are you available Mondays at 9am?" or a statement like "You are available Mondays at 9am."&nbsp;accordingly. It will also read aloud keyboard shorcuts and&nbsp;tips.
 
 ![](http://j4p.us/0N2J0K0S1202/Screen%20Shot%202016-06-15%20at%204.14.30%20PM.png)
 
