@@ -94,6 +94,7 @@ table.availability-grid {
     right: 0;
     bottom: 0;
     opacity: 0;
+    width: 100%;
     cursor: pointer; }
   table.availability-grid tbody tr div {
     background: #F9FAFA;
